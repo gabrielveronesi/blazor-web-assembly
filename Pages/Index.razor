@@ -82,15 +82,15 @@
                 var body = new Body();
                 body.number = (_telefones.numero).Replace("+","");
                 body.message = msg;
-                var url = "https://wpp-service.onrender.com/zdg-message";
-                var client = new RestClient("https://wpp-service.onrender.com");
-                 var request = new RestRequest("zdg-message", Method.Post);
-                        request.AddHeader("Content-Type", "application/json");
-                        request.AddBody(body);
-                        request.AddParameter("application/json", body, ParameterType.RequestBody);
+  
+                var client  = new RestClient("https://wpp-service.onrender.com");
+                var request = new RestRequest("zdg-message", Method.Post);
+                
+                request.AddHeader("Content-Type", "application/json");
+                request.AddBody(body);
+                request.AddParameter("application/json", body, ParameterType.RequestBody);
 
-                        var chamada = client.Execute(request, Method.Post );
-
+                client.Execute(request, Method.Post);
 
                 msg = "";
              }    
