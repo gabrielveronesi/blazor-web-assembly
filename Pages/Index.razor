@@ -2,6 +2,8 @@
 @using RestSharp
 @using blazor_web_assembly.Data
 @inject IJSRuntime JSRuntime
+@inject HttpClient HttpClient
+@inject RestClient _restClient
 
 <form>
     <div class="form-group">
@@ -68,7 +70,7 @@
         }
     }
     
-    void enviarMensagem()
+    async void enviarMensagem()
     {
         if (!string.IsNullOrWhiteSpace(msg))
         {
@@ -77,22 +79,20 @@
 
              foreach (var _telefones in telefones)
              {
-                  var client = new RestClient("https://wpp-service.onrender.com");
-                        //client.Timeout = -1;
-
-                        var body = new Body();
-                        body.number = (_telefones.numero).Replace("+","");
-                        body.message = msg;
-
-                        var request = new RestRequest("zdg-message", Method.Post);
+                var body = new Body();
+                body.number = (_telefones.numero).Replace("+","");
+                body.message = msg;
+                var url = "https://wpp-service.onrender.com/zdg-message";
+                var client = new RestClient("https://wpp-service.onrender.com");
+                 var request = new RestRequest("zdg-message", Method.Post);
                         request.AddHeader("Content-Type", "application/json");
                         request.AddBody(body);
                         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
                         var chamada = client.Execute(request, Method.Post );
-                        //Console.WriteLine(a.Content);
-                        //JSRuntime.InvokeVoidAsync("alert", chamada.Content);
-                        msg = "";
+
+
+                msg = "";
              }    
         }
     }
